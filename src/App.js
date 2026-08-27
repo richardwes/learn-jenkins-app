@@ -16,7 +16,9 @@ function App() {
         </a>
       </header>
       <p>
-          Application version: 1
+          Application version: 1 
+      </p>
+      <p>
           Work needs to be done to update the version number automatically when a new build is created.
       </p>
     </div>
