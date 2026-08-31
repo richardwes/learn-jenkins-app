@@ -9,6 +9,18 @@ services:
     environment:
       - NODE_ENV=production
 
+  docker:
+    image: docker:24-dind
+    container_name: docker
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    ports:
+      - "2375:2375"
+    command: --host=tcp://0.0.0.0:2375
+    volumes:
+      - docker_data:/var/lib/docker
+
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
@@ -21,20 +33,14 @@ services:
       DOCKER_HOST: tcp://docker:2375
     volumes:
       - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - docker
+    networks:
+      - jenkins-network
 
-  docker:
-    image: docker:24-dind
-    container_name: docker
-    privileged: true
-    environment:
-      DOCKER_TLS_CERTDIR: ""
-    ports:
-      - "2375:2375"
-    command: --host=tcp://0.0.0.0:2375
-    volumes:
-      - docker_data:/var/lib/docker
+networks:
+  jenkins-network:
 
 volumes:
   jenkins_home:
