@@ -11,6 +11,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    echo "Building the project..."
                     ls -la
                     node --version
                     npm --version
@@ -29,6 +30,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    echo "Running tests..."
                     npm test
                     test -f "build/index.html" || (echo "Build failed: index.html not found" && exit 1)
                 '''
