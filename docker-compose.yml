@@ -28,6 +28,7 @@ services:
     ports:
       - "8080:8080"
       - "50000:50000"
+      - "3000:3000"
     environment:
       DOCKER_HOST: tcp://docker:2375
     volumes:
