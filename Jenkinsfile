@@ -31,10 +31,16 @@ pipeline {
             steps {
                 sh '''
                     echo "Running tests..."
-                    npm test
+                    CI=true npm test -- --watchAll=false --runInBand
                     test -f "build/index.html" || (echo "Build failed: index.html not found" && exit 1)
                 '''
             }
+        }
+    }
+
+    post {
+        always {
+            junit 'test-results/junit.xml'
         }
     }
 }
