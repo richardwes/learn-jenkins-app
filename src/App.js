@@ -19,7 +19,7 @@ function App() {
           Application version: 1 
       </p>
       <p>
-          Work needs to be done to update the version number automatically when a new build is created.
+          smoke test.
       </p>
     </div>
   );
