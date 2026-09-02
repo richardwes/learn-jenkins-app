@@ -1,0 +1,8 @@
+FROM jenkins/jenkins:lts
+
+USER root
+
+# Install Docker CLI from scratch (no apt-get)
+COPY --from=docker:24-dind /usr/local/bin/docker /usr/local/bin/docker
+
+USER jenkins
