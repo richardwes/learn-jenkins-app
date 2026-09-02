@@ -20,6 +20,8 @@ services:
     command: --host=tcp://0.0.0.0:2375
     volumes:
       - docker_data:/var/lib/docker
+    networks:
+      - jenkins-network
 
   jenkins:
     image: jenkins/jenkins:lts
