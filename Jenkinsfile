@@ -21,35 +21,39 @@ pipeline {
                 '''
             }
         }
-        stage('Test') {
-            agent {
-                docker {
-                    image 'node:23-alpine'
-                    reuseNode true
+        stage ('Tests') {
+            parallel {
+                stage('Unit Tests') {
+                    agent {
+                        docker {
+                            image 'node:23-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh '''
+                            echo "Running tests..."
+                            CI=true npm test -- --watchAll=false --runInBand
+                            test -f "build/index.html" || (echo "Build failed: index.html not found" && exit 1)
+                        '''
+                    }
                 }
-            }
-            steps {
-                sh '''
-                    echo "Running tests..."
-                    CI=true npm test -- --watchAll=false --runInBand
-                    test -f "build/index.html" || (echo "Build failed: index.html not found" && exit 1)
-                '''
-            }
-        }
-        stage('E2E Tests') {
-            agent {
-                docker {
-                    image 'mcr.microsoft.com/playwright:v1.62.0-noble'
-                    reuseNode true
+                stage('E2E Tests') {
+                    agent {
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.62.0-noble'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh '''
+                            npm install serve
+                            node_modules/.bin/serve -s build &
+                            sleep 10
+                            npx playwright test  --reporter=html
+                        '''
+                    }
                 }
-            }
-            steps {
-                sh '''
-                    npm install serve
-                    node_modules/.bin/serve -s build &
-                    sleep 10
-                    npx playwright test  --reporter=html
-                '''
             }
         }
     }
