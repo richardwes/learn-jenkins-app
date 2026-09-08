@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image 'node:23-alpine'
+                    image 'node:22-alpine'
                     reuseNode true
                 }
             }
@@ -32,7 +32,7 @@ pipeline {
                 stage('Unit Tests') {
                     agent {
                         docker {
-                            image 'node:23-alpine'
+                            image 'node:22-alpine'
                             reuseNode true
                         }
                     }
@@ -77,14 +77,14 @@ pipeline {
         stage('Deploy') {
             agent {
                 docker {
-                    image 'node:23-alpine'
+                    image 'node:22-alpine'
                     reuseNode true
                 }
             }
             steps {
                 sh '''
                     echo "Deploying the application..."
-                    npm install netlify-cli
+                    npm install -g netlify-cli
                     node_modules/.bin/netlify --version
                 '''
             }
