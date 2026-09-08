@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        TMP_VAR = 'some_value'
+        NETLIFY_SITE_ID = 'your_site_id'
+    }
+
     stages {
         stage('Build') {
             agent {
@@ -78,7 +83,9 @@ pipeline {
             }
             steps {
                 sh '''
-
+                    echo "Deploying the application..."
+                    npm install netlify-cli
+                    node_modules/.bin/netlify --version
                 '''
             }
         }
