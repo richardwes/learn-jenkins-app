@@ -21,6 +21,7 @@ pipeline {
                 '''
             }
         }
+
         stage ('Tests') {
             parallel {
                 stage('Unit Tests') {
@@ -65,6 +66,20 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:23-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+
+                '''
             }
         }
     }
